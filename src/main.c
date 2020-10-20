@@ -4,7 +4,7 @@
 #include <SDL_ttf.h>
 #include <math.h>
 
-#define speed 6
+#define speed 12
 
 typedef struct Player {
 	float x;
@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 	}
 	
 	SDL_Window* pWindow = NULL; // Création de la fenêtre
-	pWindow = SDL_CreateWindow("A-meme-g Us - Ambi x BeXws x Rojo x Asphex", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 800, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("A-meme-g Us - Ambi x BeXws x Rojo x Asphex", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1000, 800, SDL_WINDOW_SHOWN);
 	
 	SDL_Renderer* pRenderer = SDL_CreateRenderer(pWindow,-1,SDL_RENDERER_ACCELERATED); // Création du renderer (pour afficher)
 	
@@ -30,6 +30,10 @@ int main(int argc, char* argv[]) {
 	SDL_Surface* image = SDL_LoadBMP("assets/proto-chungus.bmp");
 	SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(pRenderer, image);
 	SDL_FreeSurface(image);
+	// importation de la texture map
+	image = SDL_LoadBMP("assets/map.bmp");
+	SDL_Texture* mapTexture = SDL_CreateTextureFromSurface(pRenderer, image);
+	SDL_FreeSurface(image);
 	
 	// création d'un player
 	Player player = {0,0};
@@ -38,7 +42,7 @@ int main(int argc, char* argv[]) {
 	int keysHeld[323] = {0};
 	
 	while (1) {
-		SDL_SetRenderDrawColor(pRenderer, 255, 255, 255, 255);
+		SDL_SetRenderDrawColor(pRenderer, 100, 100, 100, 255);
 		SDL_RenderClear(pRenderer); // Netoyage du SDL_Renderer
 		
 		int endProgram = 0;
@@ -66,8 +70,10 @@ int main(int argc, char* argv[]) {
 		player.x += dx;
 		player.y += dy;
 		
-		// affichage du player
-		SDL_Rect r = {400-48+player.x, 400-48+player.y, 96, 96};
+		// affichage du player et de la "map"
+		SDL_Rect r2 = {500-2048-player.x, 400-878-player.y, 4096, 1756};
+		SDL_RenderCopy(pRenderer, mapTexture, NULL, &r2);
+		SDL_Rect r = {400-32, 400-32, 64, 64};
 		SDL_RenderCopy(pRenderer, playerTexture, NULL, &r);
 		
 		if (endProgram) break; // Condition d'arrêt du programme
