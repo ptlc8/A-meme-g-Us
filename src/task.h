@@ -1,3 +1,6 @@
+#ifndef TASK
+#define TASK
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 
@@ -14,3 +17,4 @@ Task newTask() {
 	return t;
 }
 
+#endif
