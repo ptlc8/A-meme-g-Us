@@ -4,6 +4,10 @@
 #include <SDL_ttf.h>
 #include <math.h>
 
+#define W 1000 // largeur de la fenetre
+#define H 800 // hauteur de la fenetre
+#include "tasks.h"
+
 #define speed 12
 
 typedef struct Player {
@@ -19,7 +23,7 @@ int main(int argc, char* argv[]) {
 	}
 	
 	SDL_Window* pWindow = NULL; // Création de la fenêtre
-	pWindow = SDL_CreateWindow("A-meme-g Us - Ambi x BeXws x Rojo x Asphex", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1000, 800, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("A-meme-g Us - Ambi x BeXws x Rojo x Asphex", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, W, H, SDL_WINDOW_SHOWN);
 	
 	SDL_Renderer* pRenderer = SDL_CreateRenderer(pWindow,-1,SDL_RENDERER_ACCELERATED); // Création du renderer (pour afficher)
 	
@@ -34,6 +38,10 @@ int main(int argc, char* argv[]) {
 	image = SDL_LoadBMP("assets/map.bmp");
 	SDL_Texture* mapTexture = SDL_CreateTextureFromSurface(pRenderer, image);
 	SDL_FreeSurface(image);
+	
+	//test
+	initTasks(pRenderer);
+	Task t = newTaskStonks();
 	
 	// création d'un player
 	Player player = {0,0};
@@ -55,6 +63,9 @@ int main(int argc, char* argv[]) {
 			// récupération des entrées clavier
 			if (event.type == SDL_KEYDOWN) keysHeld[event.key.keysym.scancode] = 1;
 			if (event.type == SDL_KEYUP) keysHeld[event.key.keysym.scancode] = 0;
+			
+			// test
+			t.onEvent(t, event);
 		}
 		
 		// actualisation du player
@@ -75,6 +86,9 @@ int main(int argc, char* argv[]) {
 		SDL_RenderCopy(pRenderer, mapTexture, NULL, &r2);
 		SDL_Rect r = {400-32, 400-32, 64, 64};
 		SDL_RenderCopy(pRenderer, playerTexture, NULL, &r);
+		
+		// test
+		t.print(t, pRenderer);
 		
 		if (endProgram) break; // Condition d'arrêt du programme
 		
